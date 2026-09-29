@@ -2,6 +2,17 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [0.1.2] - 2026-09-29
+
+### Corrigido
+
+- Imports relativos internos (`./protocol.js`, `./orchestrator.js`, `./crypto-web.js`) trocados
+  para extensionless (`./protocol`, `./orchestrator`, `./crypto-web`). A convenção de escrever
+  `.js` em specifiers de arquivos `.ts` é entendida pelo `tsc` (por isso o typecheck do pacote
+  nunca acusou nada), mas o bundler do Next.js, ao consumir o pacote como fonte TS crua via
+  `transpilePackages`, não faz esse mapeamento — resultava em `Module not found` em runtime
+  (só detectado rodando o app de verdade, não no typecheck nem nos testes unitários do pacote).
+
 ## [0.1.1] - 2026-09-29
 
 ### Corrigido

@@ -1,9 +1,9 @@
-import type { VnuvIdConfig, VnuvIdProfile } from "./protocol.js";
+import type { VnuvIdConfig, VnuvIdProfile } from "./protocol";
 import {
   exchangeCodeForTokens,
   fetchVnuvIdUserinfo,
   verifyVnuvIdToken,
-} from "./protocol.js";
+} from "./protocol";
 
 export const VNUV_PROVIDER = "vnuv" as const;
 

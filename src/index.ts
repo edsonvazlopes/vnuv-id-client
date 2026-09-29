@@ -1,4 +1,4 @@
-export type { VnuvIdConfig, VnuvIdProfile } from "./protocol.js";
+export type { VnuvIdConfig, VnuvIdProfile } from "./protocol";
 export {
   buildAuthorizeUrl,
   createPkcePair,
@@ -7,7 +7,7 @@ export {
   fetchVnuvIdUserinfo,
   timingSafeEqualStr,
   verifyVnuvIdToken,
-} from "./protocol.js";
+} from "./protocol";
 
 export type {
   MfaRequirement,
@@ -15,5 +15,5 @@ export type {
   VnuvIdAuthEvent,
   VnuvIdCallbackParams,
   VnuvIdLoginResult,
-} from "./orchestrator.js";
-export { VNUV_PROVIDER, completeVnuvIdLogin, handleVnuvIdCallback } from "./orchestrator.js";
+} from "./orchestrator";
+export { VNUV_PROVIDER, completeVnuvIdLogin, handleVnuvIdCallback } from "./orchestrator";

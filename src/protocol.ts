@@ -1,5 +1,5 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
-import { randomBase64Url, sha256Base64Url } from "./crypto-web.js";
+import { randomBase64Url, sha256Base64Url } from "./crypto-web";
 
 export interface VnuvIdConfig {
   /** Base URL do issuer OIDC, sem barra final. Ex.: https://id.vnuv.net/api/oidc */
@@ -140,4 +140,4 @@ export async function fetchVnuvIdUserinfo(
   };
 }
 
-export { timingSafeEqualStr } from "./crypto-web.js";
+export { timingSafeEqualStr } from "./crypto-web";
