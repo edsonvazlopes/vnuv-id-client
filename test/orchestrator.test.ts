@@ -97,7 +97,7 @@ describe("completeVnuvIdLogin", () => {
     expect(result).toMatchObject({ ok: true, event: "signup" });
     expect(adapter.users.size).toBe(1);
     expect(adapter.sessions).toEqual([(result as { user: FakeUser }).user.id]);
-    expect(adapter.events.map((e) => e.type)).toEqual(["signup"]);
+    expect(adapter.events.map((e) => e.type)).toEqual(["signup", "login"]);
   });
 
   it("vincula automaticamente por e-mail quando já existe conta local, sem duplicar", async () => {
@@ -159,6 +159,25 @@ describe("completeVnuvIdLogin", () => {
       mfa: { challengeToken: "challenge-user-mfa" },
     });
     expect(adapter.sessions).toEqual([]);
+  });
+
+  it("emite o evento de vínculo mesmo quando o MFA bloqueia a sessão em seguida", async () => {
+    // Replica o comportamento original do Nicho: o alerta de vínculo/audit de conta
+    // dispara no momento em que a conta é resolvida, não só quando o login termina
+    // com sucesso — senão um e-mail de "sua conta foi vinculada" nunca seria enviado
+    // pra quem tem MFA habilitado.
+    const adapter = new FakeAdapter();
+    adapter.seedUser({
+      id: "user-mfa-linked",
+      email: "pessoa@example.com",
+      emailVerifiedAt: null,
+      lockedUntil: null,
+      mfaEnabled: true,
+    });
+
+    const result = await completeVnuvIdLogin(makeProfile(), adapter);
+    expect(result).toMatchObject({ ok: false, code: "MFA_REQUIRED" });
+    expect(adapter.events.map((e) => e.type)).toEqual(["linked", "mfa_required"]);
   });
 
   it("onAuthEvent que lança erro não derruba o login", async () => {

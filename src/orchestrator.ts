@@ -77,6 +77,10 @@ export async function completeVnuvIdLogin<TUser>(
       user = await adapter.createUserWithExternalIdentity(profile.email, profile.sub);
       event = "signup";
     }
+    // Emitido já aqui (não só no sucesso final) porque vínculo/criação de conta é um fato
+    // que já aconteceu independente do que o gate de MFA decidir a seguir — mesma ordem do
+    // fluxo original, onde o alerta de vínculo e o audit de signup disparam antes do MFA.
+    await emit(adapter, { type: event, user });
   }
 
   if (await adapter.isAccountLocked(user)) {
@@ -92,7 +96,7 @@ export async function completeVnuvIdLogin<TUser>(
   }
 
   await adapter.createSession(user, { remember: opts.remember ?? false });
-  await emit(adapter, { type: event, user });
+  await emit(adapter, { type: "login", user });
 
   return { ok: true, user, event };
 }
